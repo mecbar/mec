@@ -46,7 +46,7 @@ const db = await openDB(dbName, version,{
       // create a session
       const myOnnxSession = new onnx.InferenceSession();
       // load the ONNX model file
-      const url ='https://github.com/mecbar/mecbar.github.io/blob/master/model/mnist-model.onnx'
+      const url ='./my_face.onnx'
       myOnnxSession.loadModel(url).then(() => {
         // generate model input
         const inferenceInputs = getInputs();
