@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8" />
+  </head>
+    <!-- Load ONNX.js -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    
+    <!-- Code that consume ONNX.js -->
+    <script type="module">
+
+import { openDB, deleteDB } from 'https://unpkg.com/idb?module'
+console.log(openDB, 55)
+const dbName = 'myFace'
+const storeName = 'onnx'
+const version = 1
+
+const db = await openDB(dbName, version,{
+      upgrade(db, oldVersion, newVersion, transaction) {
+      const store = db.createObjectStore(storeName)
+      store.put( "./my_face.onnx", 'model')
+      console.log('db')
+      }
+    })
+
+    </script>
+    <script>
+       async function a()  {
+          //...
+          const dbName = 'myFace'
+          const storeName = 'onnx'
+          const version = 1
+         
+          const db = await openDB(dbName, version,{
+                upgrade(db, oldVersion, newVersion, transaction) {
+                const store = db.createObjectStore(storeName)
+                store.put('Hello world!', 'Hello')
+                console.log('db')
+         }
+       })
+      }
+      
+
+
+      // create a session
+      const myOnnxSession = new onnx.InferenceSession();
+      // load the ONNX model file
+      const url ='https://github.com/mecbar/mecbar.github.io/blob/master/model/mnist-model.onnx'
+      myOnnxSession.loadModel(url).then(() => {
+        // generate model input
+        const inferenceInputs = getInputs();
+        // execute the model
+        myOnnxSession.run(inferenceInputs).then((output) => {
+          // consume the output
+          const outputTensor = output.values().next().value;
+          console.log(`model output tensor: ${outputTensor.data}.`);
+        });
+      });
+    </script>
+    <body>
+    <div>
+        <button onclick="a()" >crea db</button>
+    </div>
+  </body>
+</html>
